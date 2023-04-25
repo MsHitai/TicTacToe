@@ -11,7 +11,7 @@ public class StatisticsOrientedAI {
     Game game = new Game();
 
     public void createStatsForO() {
-        for (int i = 0; i < 10_000_000; i++) { // 10_000_000
+        for (int i = 0; i < 1_000_000; i++) { // 10_000_000
             boolean gameOver = false;
             String field = "_________";
             List<String> winningStates = new ArrayList<>();
@@ -27,7 +27,7 @@ public class StatisticsOrientedAI {
                 if (game.getAvailableMoves(field).size() == 0) {
                     gameOver = true;
                 } else {
-                    field = game.randomMove(npc, field);
+                    field = game.smartMove(npc, field); //field = game.randomMove(npc, field);
                     currentGame.add(field);
                 }
 
@@ -90,7 +90,7 @@ public class StatisticsOrientedAI {
     public static void main(String[] args) {
         StatisticsOrientedAI ai = new StatisticsOrientedAI();
 
-        System.out.println(ai.game.isVictory('X', "_0X0X0X__"));
+        //System.out.println(ai.game.isVictory('X', "_0X0X0X__"));
 
         ai.createStatsForO();
 

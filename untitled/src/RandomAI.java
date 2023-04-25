@@ -78,7 +78,7 @@ public class RandomAI {
         System.out.println("Противник выбрал позицию " + computerMove);
         placeMove(board, String.valueOf(computerMove), 'O');
     }
-    
+
     private static Boolean isValidMove(char[][] board, String position) {
         switch (position) {
             case "1":

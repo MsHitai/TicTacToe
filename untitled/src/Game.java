@@ -106,7 +106,7 @@ public class Game {
     }
 
 
-    private String smartMove(char player, String field) {
+    public String smartMove(char player, String field) {
         List<Integer> availableMoves = getAvailableMoves(field);
         int bestScore = 0;
         String bestMove = "";
@@ -145,7 +145,6 @@ public class Game {
                 gameOver = true;
             }
         }
-
 
     }
 }
