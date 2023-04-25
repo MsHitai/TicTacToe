@@ -6,7 +6,9 @@ import java.util.Map;
 
 public class StatisticsOrientedAI {
 
-    private final Map<String, Integer> stats = new HashMap<>();
+    private final Map<String, Integer> statsO = new HashMap<>();
+
+    private final Map<String, Integer> statsX = new HashMap<>();
 
     Game game = new Game();
 
@@ -27,7 +29,7 @@ public class StatisticsOrientedAI {
                 if (game.getAvailableMoves(field).size() == 0) {
                     gameOver = true;
                 } else {
-                    field = game.smartMove(npc, field); //field = game.randomMove(npc, field);
+                    field = game.randomMove(player, field);
                     currentGame.add(field);
                 }
 
@@ -41,7 +43,7 @@ public class StatisticsOrientedAI {
                 if (game.getAvailableMoves(field).size() == 0) {
                     gameOver = true;
                 } else {
-                    field = game.randomMove(player, field);
+                    field = game.randomMove(npc, field); //field = game.smartMove(npc, field);
                     currentGame.add(field);
                 }
 
@@ -51,6 +53,7 @@ public class StatisticsOrientedAI {
                 } else if (game.isVictory(player, field)) {
                     gameOver = true;
                 }
+
             }
 
             if(winner == npc) {
@@ -58,15 +61,69 @@ public class StatisticsOrientedAI {
             }
 
             for (String winningState : winningStates) {
-                stats.put(winningState, stats.getOrDefault(winningState, 0) + 1);
+                statsO.put(winningState, statsO.getOrDefault(winningState, 0) + 1);
             }
         }
     }
 
-    private void save() {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("resources/results.txt"))) {
-            for (String state : stats.keySet()) {
-                bw.write(state + "=" + stats.get(state) + "\n");
+    public void createStatsForX() {
+        for (int i = 0; i < 1_000_000; i++) { // 10_000_000
+            boolean gameOver = false;
+            String field = "_________";
+            List<String> winningStates = new ArrayList<>();
+            List<String> currentGame = new ArrayList<>();
+
+            char winner = '?';
+
+            char npc = Types.O.type;
+            char player = Types.X.type;
+
+            while (!gameOver) {
+
+                if (game.getAvailableMoves(field).size() == 0) {
+                    gameOver = true;
+                } else {
+                    field = game.randomMove(player, field);
+                    currentGame.add(field);
+                }
+
+                if (game.isVictory(npc, field)) {
+                    gameOver = true;
+                } else if (game.isVictory(player, field)) {
+                    winner = player;
+                    gameOver = true;
+                }
+
+                if (game.getAvailableMoves(field).size() == 0) {
+                    gameOver = true;
+                } else {
+                    field = game.randomMove(npc, field);
+                    currentGame.add(field);
+                }
+
+                if (game.isVictory(npc, field)) {
+                    winner = npc;
+                    gameOver = true;
+                } else if (game.isVictory(player, field)) {
+                    gameOver = true;
+                }
+
+            }
+
+            if(winner == player) {
+                winningStates = currentGame;
+            }
+
+            for (String winningState : winningStates) {
+                statsX.put(winningState, statsX.getOrDefault(winningState, 0) + 1);
+            }
+        }
+    }
+
+    private void save(String path) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
+            for (String state : statsO.keySet()) {
+                bw.write(state + "=" + statsO.get(state) + "\n");
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -94,6 +151,10 @@ public class StatisticsOrientedAI {
 
         ai.createStatsForO();
 
-        ai.save();
+        ai.save("resources/resultsO.txt");
+
+        ai.createStatsForX();
+
+        ai.save("resources/resultsX.txt");
     }
 }

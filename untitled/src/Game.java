@@ -3,7 +3,7 @@ import java.util.*;
 public class Game {
 
     Scanner scanner = new Scanner(System.in);
-    Map<String, Integer> stats = StatisticsOrientedAI.load("resources/results.txt");
+    Map<String, Integer> stats = StatisticsOrientedAI.load("resources/resultsO.txt");
     Random random = new Random();
 
     public List<Integer> getAvailableMoves(String field) {
@@ -28,7 +28,7 @@ public class Game {
         return makeMove(player, field, i);
     }
 
-    private String makeMove(char player, String field, int i) { // todo 'field is occupied'
+    private String makeMove(char player, String field, int i) {
         return field.substring(0, i) + player + field.substring(i + 1);
     }
 
