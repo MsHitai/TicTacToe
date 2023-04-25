@@ -1,7 +1,7 @@
 import java.util.Random;
 import java.util.Scanner;
 
-public class Main {
+public class RandomAI {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
@@ -78,7 +78,7 @@ public class Main {
         System.out.println("Противник выбрал позицию " + computerMove);
         placeMove(board, String.valueOf(computerMove), 'O');
     }
-
+    
     private static Boolean isValidMove(char[][] board, String position) {
         switch (position) {
             case "1":
